@@ -1,0 +1,285 @@
+.results-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.results-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  border-top: 6px solid;
+}
+
+.results-card.bankrupt {
+  border-top-color: #e74c3c;
+}
+
+.results-card.healthy {
+  border-top-color: #27ae60;
+}
+
+.results-header {
+  text-align: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 20px;
+}
+
+.results-header h2 {
+  font-size: 1.8em;
+  color: #333;
+}
+
+.prediction-status {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 35px;
+  padding: 25px;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  font-size: 3em;
+  flex-shrink: 0;
+}
+
+.status-indicator.bankrupt {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+}
+
+.status-indicator.healthy {
+  background: rgba(39, 174, 96, 0.1);
+  color: #27ae60;
+}
+
+.status-text h3 {
+  font-size: 2em;
+  margin: 0 0 10px 0;
+}
+
+.status-text p {
+  margin: 0;
+  font-size: 1.1em;
+  color: #666;
+}
+
+.status-text .bankrupt {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.status-text .healthy {
+  color: #27ae60;
+  font-weight: 600;
+}
+
+.risk-level.low {
+  color: #27ae60;
+}
+
+.risk-level.medium {
+  color: #f39c12;
+}
+
+.risk-level.high {
+  color: #e74c3c;
+}
+
+.results-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 35px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-label {
+  color: #666;
+  font-size: 0.95em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-value {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.probability-chart {
+  margin-bottom: 35px;
+}
+
+.chart-label {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bar-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.bar-label {
+  width: 80px;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95em;
+}
+
+.bar-wrapper {
+  flex: 1;
+  height: 35px;
+  background: #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  border-radius: 8px;
+  transition: width 0.5s ease-out;
+  min-width: 50px;
+}
+
+.bar-value {
+  color: white;
+  font-weight: 700;
+  font-size: 0.95em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.healthy-bar {
+  background: linear-gradient(90deg, #27ae60, #2ecc71);
+}
+
+.bankrupt-bar {
+  background: linear-gradient(90deg, #e74c3c, #ec7063);
+}
+
+.interpretation {
+  padding: 25px;
+  border-radius: 10px;
+  border-left: 5px solid;
+}
+
+.interpretation h4 {
+  margin: 0 0 10px 0;
+  font-size: 1.1em;
+}
+
+.interpretation p {
+  margin: 0;
+  line-height: 1.6;
+  color: #555;
+}
+
+.interpretation.success {
+  background: rgba(39, 174, 96, 0.1);
+  border-left-color: #27ae60;
+  color: #27ae60;
+}
+
+.interpretation.success h4 {
+  color: #27ae60;
+}
+
+.interpretation.success p {
+  color: #555;
+}
+
+.interpretation.alert {
+  background: rgba(231, 76, 60, 0.1);
+  border-left-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.interpretation.alert h4 {
+  color: #e74c3c;
+}
+
+.interpretation.alert p {
+  color: #555;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .results-card {
+    padding: 20px;
+  }
+
+  .prediction-status {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .status-text h3 {
+    font-size: 1.6em;
+  }
+
+  .results-details {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .detail-value {
+    font-size: 1.5em;
+  }
+
+  .bar-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .bar-label {
+    width: auto;
+  }
+
+  .bar-wrapper {
+    width: 100%;
+  }
+}
