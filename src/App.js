@@ -56,10 +56,6 @@ function App() {
           )}
         </div>
       </main>
-
-      <footer className="app-footer">
-        <p>&copy; 2025 Machine Learning and Systems for Network. All rights reserved.</p>
-      </footer>
     </div>
   );
 }

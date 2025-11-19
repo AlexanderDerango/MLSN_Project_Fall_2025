@@ -88,24 +88,79 @@ MLSN_Project_Fall_2025/
 
 ## 🚀 How to Run
 
-### Quick Start (2 terminals)
+### Prerequisites
+- Python 3.8+ installed
+- Node.js and npm installed
+- Project dependencies installed
 
-**Terminal 1 - Backend:**
+### Step 1: Install All Dependencies
+
+**Open a terminal/PowerShell in the project directory and run:**
+
+```bash
+# Install Python backend dependencies
+pip install -r requirements.txt
+
+# Install React frontend dependencies
+npm install
+```
+
+### Step 2: Start the Backend Server
+
+**Open Terminal 1 and run:**
+
 ```bash
 python app.py
 ```
 
-**Terminal 2 - Frontend:**
+You should see output like:
+```
+ * Serving Flask app 'app'
+ * Debug mode: on
+ * Running on http://127.0.0.1:5000
+```
+
+✅ Backend is now running on **http://localhost:5000**
+
+### Step 3: Start the Frontend Server
+
+**Open Terminal 2 (in the same project directory) and run:**
+
 ```bash
-npm install  # First time only
 npm start
 ```
 
-Then open: `http://localhost:3000`
+You should see:
+```
+Compiled successfully!
+
+You can now view bankruptcy-predictor in the browser.
+
+  Local:            http://localhost:3000
+```
+
+✅ Frontend is now running on **http://localhost:3000**
+
+The browser will automatically open. If not, manually navigate to:
+### **http://localhost:3000**
+
+### Both Servers Running
+
+You now have:
+- ✅ **Backend API** running on `http://localhost:5000`
+- ✅ **Frontend UI** running on `http://localhost:3000`
+- ✅ Ready to make bankruptcy predictions!
+
+### Quick Reference - Running Both Servers
+
+| Component | Command | Port | Terminal |
+|-----------|---------|------|----------|
+| Backend | `python app.py` | 5000 | Terminal 1 |
+| Frontend | `npm start` | 3000 | Terminal 2 |
 
 ### Full Setup Instructions
 
-See **QUICK_START.md** for detailed setup steps.
+See **QUICK_START.md** for detailed setup steps and troubleshooting.
 
 ## 📋 Input Parameters
 
@@ -221,6 +276,91 @@ The application accepts all 18 financial metrics:
 4. **Access the app:**
    - Open http://localhost:3000 in your browser
 
+## ⚙️ Troubleshooting Startup Issues
+
+### Backend Won't Start
+
+**Error: "ModuleNotFoundError"**
+```bash
+# Solution: Install Python dependencies
+pip install -r requirements.txt
+```
+
+**Error: "Port 5000 already in use"**
+```bash
+# Solution: Kill the process using port 5000 or change the port in app.py
+# To use a different port, edit app.py and change:
+# app.run(debug=True, port=5000)  →  app.run(debug=True, port=5001)
+```
+
+**Error: "Model not found" warning**
+- This is OK - the model.pkl file is generated when you train
+- The app will still run, but predictions won't work until you train a model
+- See "Train the Model" section below
+
+### Frontend Won't Start
+
+**Error: "npm: command not found"**
+```bash
+# Solution: Install Node.js from https://nodejs.org/
+# Then restart your terminal
+```
+
+**Error: "node_modules not found"**
+```bash
+# Solution: Install npm dependencies
+npm install
+```
+
+**Error: "Port 3000 already in use"**
+```bash
+# Solution: Kill the process or use a different port
+# Windows: netstat -ano | findstr :3000
+# Then: taskkill /PID <PID> /F
+```
+
+### Connection Issues
+
+**Error: "Connection refused" or "Cannot reach backend"**
+- Make sure Terminal 1 is running: `python app.py`
+- Make sure Terminal 2 is running: `npm start`
+- Check that both show "Running on" messages
+- Try refreshing the browser (Ctrl+R or Cmd+R)
+
+**Error: CORS errors in browser console**
+- The backend has CORS enabled, but make sure Flask is running
+- Check the browser console (F12) for specific error messages
+
+### Clear & Reinstall (Nuclear Option)
+
+If things aren't working, try a fresh install:
+
+```bash
+# Stop both servers (Ctrl+C in each terminal)
+
+# Clean up
+rm -r node_modules  # or: rmdir /s node_modules (Windows)
+rm -r __pycache__   # or: rmdir /s __pycache__ (Windows)
+
+# Reinstall everything
+pip install --upgrade -r requirements.txt
+npm install
+
+# Start fresh
+python app.py  # Terminal 1
+npm start      # Terminal 2
+```
+
+## 🤖 Train the Model
+
+If you have the training data files (`train.csv`, `validation.csv`, `test.csv`):
+
+```bash
+python train_model.py
+```
+
+This creates `model.pkl` which the Flask server uses for predictions.
+
 ## 📝 Notes
 
 - All financial metrics should be entered as numbers (integers or decimals)
@@ -228,6 +368,7 @@ The application accepts all 18 financial metrics:
 - Results show probability percentages for easy interpretation
 - Risk levels (Low/Medium/High) are automatically calculated
 - The UI is fully responsive and mobile-friendly
+- **Keep both Terminal 1 (backend) and Terminal 2 (frontend) running while using the app**
 
 ---
 

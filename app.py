@@ -14,12 +14,17 @@ app.config.from_object(CONFIG)
 CORS(app, resources={r"/api/*": {"origins": CONFIG.CORS_ORIGINS}})
 
 # Load the trained model
-try:
-    model = joblib.load('model.pkl')
-    print("Model loaded successfully")
-except:
-    print("Warning: Model not found. Please train and save the model first.")
-    model = None
+def _try_load_model(path='model.pkl'):
+    try:
+        m = joblib.load(path)
+        print("Model loaded successfully from:", path)
+        return m
+    except Exception as e:
+        # Print exception details to help debugging when model fails to load
+        print(f"Warning: Could not load model from '{path}': {e}")
+        return None
+
+model = _try_load_model('model.pkl')
 
 # Feature names in the correct order
 FEATURE_NAMES = [
@@ -30,6 +35,11 @@ FEATURE_NAMES = [
 @app.route('/api/predict', methods=['POST'])
 def predict():
     try:
+        # Ensure model is loaded before attempting to predict
+        if model is None:
+            return jsonify({
+                'error': 'Model not loaded. Create a model by running `python train_model.py` or place a valid `model.pkl` in the project root.'
+            }), 503
         data = request.json
         
         # Extract features in the correct order
@@ -39,8 +49,8 @@ def predict():
                 return jsonify({'error': f'Missing feature: {feature_name}'}), 400
             try:
                 features.append(float(data[feature_name]))
-            except ValueError:
-                return jsonify({'error': f'Invalid value for {feature_name}'}), 400
+            except (ValueError, TypeError):
+                return jsonify({'error': f'Invalid numeric value for {feature_name}'}), 400
         
         # Convert to numpy array and reshape for prediction
         X = np.array(features).reshape(1, -1)
@@ -63,7 +73,9 @@ def predict():
         return jsonify(result), 200
     
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        # Return a helpful error message and log exception
+        print(f"Error during prediction: {e}")
+        return jsonify({'error': 'Prediction failed. See server logs for details.'}), 500
 
 @app.route('/api/health', methods=['GET'])
 def health():
