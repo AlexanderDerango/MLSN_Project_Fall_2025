@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 import PredictionForm from './components/PredictionForm';
@@ -8,6 +8,17 @@ function App() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    const stored = localStorage.getItem('bp_theme');
+    if (stored) setTheme(stored);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('bp_theme', theme);
+  }, [theme]);
 
   const handleSubmit = async (formData) => {
     setLoading(true);
@@ -35,8 +46,21 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Bankruptcy Risk Predictor</h1>
-        <p className="subtitle">Analyze company financial metrics to predict bankruptcy risk</p>
+        <div className="header-row">
+          <div>
+            <h1>Bankruptcy Risk Predictor</h1>
+            <p className="subtitle">Analyze company financial metrics to predict bankruptcy risk</p>
+          </div>
+          <div className="header-controls">
+            <button
+              className="theme-toggle"
+              onClick={() => setTheme(prev => (prev === 'light' ? 'dark' : 'light'))}
+              aria-label="Toggle theme"
+            >
+              {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+            </button>
+          </div>
+        </div>
       </header>
 
       <main className="app-main">

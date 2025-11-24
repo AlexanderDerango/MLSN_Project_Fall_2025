@@ -150,26 +150,26 @@ const PredictionForm = ({ onSubmit, isLoading }) => {
     });
   };
 
-  // Sample data for a company heading towards bankruptcy
+  // Sample data for a company heading towards bankruptcy (EXTREME values for clear bankruptcy signal)
   const bankruptCompanyData = {
-    X1: '1000000',      // Low current assets
-    X2: '500000',       // High COGS relative to assets
-    X3: '50000',        // Depreciation
-    X4: '100000',       // Low EBITDA
-    X5: '200000',       // Low inventory
-    X6: '-500000',      // Negative net income (loss)
-    X7: '100000',       // Low receivables
-    X8: '500000',       // Low market value
-    X9: '800000',       // Low net sales
-    X10: '2000000',     // Moderate total assets
-    X11: '800000',      // High long-term debt
-    X12: '-100000',     // Negative EBIT
-    X13: '50000',       // Low gross profit
-    X14: '900000',      // High current liabilities
-    X15: '-1000000',    // Negative retained earnings (accumulated losses)
-    X16: '900000',      // Low total revenue
-    X17: '1500000',     // High total liabilities
-    X18: '700000'       // High operating expenses
+    X1: '1000',            // Extremely low current assets
+    X2: '20000000',        // Extremely high COGS (company burning cash)
+    X3: '500000',          // Very high depreciation/amortization
+    X4: '-5000000',        // Very large negative EBITDA
+    X5: '100',             // Almost no inventory
+    X6: '-10000000',       // Massive negative net income (huge losses)
+    X7: '0',               // No receivables (no incoming payments)
+    X8: '10000',           // Near-zero market value
+    X9: '50000',           // Tiny net sales
+    X10: '15000',          // Almost no total assets
+    X11: '50000000',       // Extremely large long-term debt
+    X12: '-15000000',      // Extremely negative EBIT
+    X13: '-2000000',       // Significant negative gross profit
+    X14: '60000000',       // Overwhelming current liabilities
+    X15: '-20000000',      // Deep negative retained earnings
+    X16: '20000',          // Very low total revenue
+    X17: '80000000',       // Enormous total liabilities
+    X18: '30000000'        // Very high operating expenses
   };
 
   // Sample data for a healthy company

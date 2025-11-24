@@ -56,18 +56,55 @@ def predict():
         X = np.array(features).reshape(1, -1)
         
         # Make prediction
-        prediction = model.predict(X)[0]
+        raw_prediction = model.predict(X)[0]
         probability = model.predict_proba(X)[0]
-        
-        # Interpret results
-        bankruptcy_prob = probability[1] * 100  # Probability of bankruptcy
-        healthy_prob = probability[0] * 100      # Probability of being healthy
-        
+
+        # Determine which class index corresponds to 'bankrupt'/failed label
+        # Handle common label encodings (numeric 0/1 or strings like 'failed')
+        bankruptcy_index = None
+        try:
+            classes = list(model.classes_)
+        except Exception:
+            classes = []
+
+        candidates = [1, 'failed', 'Failed', 'FAILED', 'bankrupt', 'Bankrupt', 'BANKRUPT']
+        for idx, cls in enumerate(classes):
+            if cls in candidates:
+                bankruptcy_index = idx
+                break
+
+        # Fallbacks: if not found, try numeric mapping (assume 1 means bankrupt)
+        if bankruptcy_index is None:
+            try:
+                # find index where class == 1
+                bankruptcy_index = int(np.where(np.array(classes) == 1)[0])
+            except Exception:
+                # default to index 1 if there are two classes
+                bankruptcy_index = 1 if len(classes) > 1 else 0
+
+        # Now compute probabilities using the discovered index
+        bankruptcy_prob = float(probability[bankruptcy_index]) * 100
+        healthy_prob = 100.0 - bankruptcy_prob
+
+        # Interpret raw prediction using the discovered class mapping
+        predicted_label = raw_prediction
+        is_bankrupt = False
+        try:
+            is_bankrupt = (predicted_label == classes[bankruptcy_index])
+        except Exception:
+            # If classes mapping isn't available, fall back to numeric check
+            try:
+                is_bankrupt = (int(predicted_label) == 1)
+            except Exception:
+                is_bankrupt = False
+
         result = {
-            'prediction': 'Bankrupt' if prediction == 1 else 'Healthy',
+            'prediction': 'Bankrupt' if is_bankrupt else 'Healthy',
             'bankruptcy_risk': round(bankruptcy_prob, 2),
             'healthy_probability': round(healthy_prob, 2),
-            'confidence': round(max(bankruptcy_prob, healthy_prob), 2)
+            'confidence': round(max(bankruptcy_prob, healthy_prob), 2),
+            'raw_prediction': str(raw_prediction),
+            'model_classes': classes
         }
         
         return jsonify(result), 200
