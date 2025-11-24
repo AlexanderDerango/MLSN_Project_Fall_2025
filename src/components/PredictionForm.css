@@ -24,6 +24,54 @@
 .form-intro p {
   color: #666;
   font-size: 1.05em;
+  margin-bottom: 20px;
+}
+
+.autofill-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.btn-autofill {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-autofill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-autofill:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-autofill.bankrupt {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+}
+
+.btn-autofill.bankrupt:hover {
+  background: linear-gradient(135deg, #ec7063, #cb4335);
+}
+
+.btn-autofill.healthy {
+  background: linear-gradient(135deg, #27ae60, #229954);
+  color: white;
+}
+
+.btn-autofill.healthy:hover {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
 }
 
 .form-grid {

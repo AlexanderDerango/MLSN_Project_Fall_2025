@@ -7,7 +7,9 @@ import numpy as np
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from imblearn.over_sampling import SMOTE
+from imblearn.pipeline import Pipeline as ImbPipeline
 import joblib
 
 def train_model():
@@ -45,17 +47,22 @@ def train_model():
         remainder='passthrough'
     )
     
-    # Create and train model
+    # Create and train model with SMOTE for class imbalance
     gb_clf = GradientBoostingClassifier(
-        n_estimators=500,
+        n_estimators=100,
         learning_rate=0.2,
-        max_depth=3,
-        random_state=42
+        max_depth=2,
+        random_state=42,
+        verbose=1  # Show progress
     )
     
-    from sklearn.pipeline import Pipeline
-    pipeline = Pipeline(steps=[
+    # Use imbalanced-learn Pipeline to apply SMOTE before classifier
+    # This balances the training data by oversampling the minority class
+    smote = SMOTE(random_state=42, k_neighbors=5)
+    
+    pipeline = ImbPipeline(steps=[
         ('preprocessor', preprocessor),
+        ('smote', smote),
         ('classifier', gb_clf)
     ])
     
@@ -69,10 +76,12 @@ def train_model():
     val_accuracy = accuracy_score(y_val, val_preds)
     test_accuracy = accuracy_score(y_test, test_preds)
     
-    print(f"Validation Accuracy: {val_accuracy:.4f}")
+    print(f"\nValidation Accuracy: {val_accuracy:.4f}")
     print(f"Test Accuracy: {test_accuracy:.4f}")
     print("\nClassification Report (Test):")
     print(classification_report(y_test, test_preds))
+    print("\nConfusion Matrix (Test):")
+    print(confusion_matrix(y_test, test_preds))
     
     # Save model
     joblib.dump(pipeline, 'model.pkl')

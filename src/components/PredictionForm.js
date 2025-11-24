@@ -150,12 +150,82 @@ const PredictionForm = ({ onSubmit, isLoading }) => {
     });
   };
 
+  // Sample data for a company heading towards bankruptcy
+  const bankruptCompanyData = {
+    X1: '1000000',      // Low current assets
+    X2: '500000',       // High COGS relative to assets
+    X3: '50000',        // Depreciation
+    X4: '100000',       // Low EBITDA
+    X5: '200000',       // Low inventory
+    X6: '-500000',      // Negative net income (loss)
+    X7: '100000',       // Low receivables
+    X8: '500000',       // Low market value
+    X9: '800000',       // Low net sales
+    X10: '2000000',     // Moderate total assets
+    X11: '800000',      // High long-term debt
+    X12: '-100000',     // Negative EBIT
+    X13: '50000',       // Low gross profit
+    X14: '900000',      // High current liabilities
+    X15: '-1000000',    // Negative retained earnings (accumulated losses)
+    X16: '900000',      // Low total revenue
+    X17: '1500000',     // High total liabilities
+    X18: '700000'       // High operating expenses
+  };
+
+  // Sample data for a healthy company
+  const healthyCompanyData = {
+    X1: '50000000',     // High current assets
+    X2: '20000000',     // Moderate COGS
+    X3: '2000000',      // Depreciation
+    X4: '15000000',     // High EBITDA
+    X5: '10000000',     // Moderate inventory
+    X6: '5000000',      // Positive net income (profit)
+    X7: '8000000',      // High receivables
+    X8: '100000000',    // High market value
+    X9: '80000000',     // High net sales
+    X10: '150000000',   // High total assets
+    X11: '20000000',    // Moderate long-term debt
+    X12: '12000000',    // Positive EBIT
+    X13: '30000000',    // High gross profit
+    X14: '25000000',    // Moderate current liabilities
+    X15: '20000000',    // Positive retained earnings (accumulated profits)
+    X16: '90000000',    // High total revenue
+    X17: '50000000',    // Moderate total liabilities
+    X18: '15000000'     // Reasonable operating expenses
+  };
+
+  const handleAutofillBankrupt = () => {
+    setFormData(bankruptCompanyData);
+  };
+
+  const handleAutofillHealthy = () => {
+    setFormData(healthyCompanyData);
+  };
+
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit} className="prediction-form">
         <div className="form-intro">
           <h2>Enter Company Financial Data</h2>
           <p>Please provide the following financial metrics to assess bankruptcy risk</p>
+          <div className="autofill-buttons">
+            <button
+              type="button"
+              className="btn-autofill bankrupt"
+              onClick={handleAutofillBankrupt}
+              title="Load sample data for a company heading towards bankruptcy"
+            >
+              📉 Company 1: Bankrupt
+            </button>
+            <button
+              type="button"
+              className="btn-autofill healthy"
+              onClick={handleAutofillHealthy}
+              title="Load sample data for a healthy company"
+            >
+              📈 Company 2: Healthy
+            </button>
+          </div>
         </div>
 
         <div className="form-grid">
